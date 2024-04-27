@@ -2,8 +2,11 @@
 
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-require "src/Router.php";
-$router = new Router();
+spl_autoload_register(function ($class) {
+    require 'src/' . str_replace('\\', '/', $class) . '.php';
+});
+
+$router = new Framework\Router();
 
 $router->add('/home/index', ['controller' => 'HomeController', 'action' => 'index']);
 $router->add('/', ['controller' => 'HomeController', 'action' => 'index']);
@@ -16,10 +19,9 @@ if ($params === false) {
     die('404 Not Found');
 }
 
-$controller = $params['controller'];
+$controller = 'App\Controllers\\' . ucwords($params['controller']);
 $action = $params['action'];
 
-require "src/controllers/$controller.php";
 
 $controller_obj = new $controller;
 $controller_obj->$action();
