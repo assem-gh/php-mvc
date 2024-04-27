@@ -10,6 +10,7 @@ spl_autoload_register(function ($class) {
 });
 
 $router = new Router();
+$router->add('admin/{controller}/{action}', ['namespace' => 'Admin']);
 $router->add('/home/index', ['controller' => 'Home', 'action' => 'index']);
 $router->add('/', ['controller' => 'Home', 'action' => 'index']);
 $router->add('/products', ['controller' => 'Products', 'action' => 'index']);
