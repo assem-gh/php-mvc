@@ -8,9 +8,11 @@ spl_autoload_register(function ($class) {
 
 $router = new Framework\Router();
 
-$router->add('/home/index', ['controller' => 'HomeController', 'action' => 'index']);
-$router->add('/', ['controller' => 'HomeController', 'action' => 'index']);
-$router->add('/products/index', ['controller' => 'ProductsController', 'action' => 'index']);
+$router->add('/{controller}/{action}');
+$router->add('/home/index', ['controller' => 'Home', 'action' => 'index']);
+$router->add('/{controller}/{id:\d+}/{action}');
+$router->add('/', ['controller' => 'Home', 'action' => 'index']);
+$router->add('/products', ['controller' => 'Products', 'action' => 'index']);
 
 $params = $router->match($path);
 
@@ -19,7 +21,7 @@ if ($params === false) {
     die('404 Not Found');
 }
 
-$controller = 'App\Controllers\\' . ucwords($params['controller']);
+$controller = 'App\Controllers\\' . ucwords($params['controller']) . 'Controller';
 $action = $params['action'];
 
 
