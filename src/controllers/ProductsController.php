@@ -2,7 +2,7 @@
 
 class ProductsController
 {
-    public  function index()
+    public function index()
     {
         require "src/models/Product.php";
 
@@ -12,4 +12,8 @@ class ProductsController
         require "views/products_index.php";
     }
 
+    public function show()
+    {
+        require "views/products_show.php";
+    }
 }
