@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Database;
+use Framework\Container;
 use Framework\Dispatcher;
 use Framework\Router;
 
@@ -17,5 +21,10 @@ $router->add('/products', ['controller' => 'Products', 'action' => 'index']);
 $router->add('/{controller}/{id:\d+}/{action}');
 $router->add('/{controller}/{action}');
 
-$dispatcher = new Dispatcher($router);
+$container = new Container();
+$container->set(Database::class, function () {
+    return new Database("127.0.0.1", "admin", "password", "mvc",);
+});
+
+$dispatcher = new Dispatcher($router, $container);
 $dispatcher->handle($path);

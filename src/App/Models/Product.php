@@ -2,17 +2,21 @@
 
 namespace App\Models;
 
+
+use App\Database;
 use PDO;
 
 class Product
 {
-    public function getData()
+    public function __construct(
+        private readonly Database $database
+    )
     {
-        $dns = "mysql:host=127.0.0.1;dbname=mvc;charset=utf8;port=3306";
-        $pdo = new PDO($dns, "admin", "password", [
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        ]);
+    }
 
+    public function getData(): false|array
+    {
+        $pdo = $this->database->getConnection();
         $stmt = $pdo->query("SELECT * FROM product");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

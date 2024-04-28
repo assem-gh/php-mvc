@@ -9,8 +9,8 @@ class ProductsController
 {
 
     public function __construct(
-       private readonly Renderer $renderer,
-       private readonly Product $productModel
+        private readonly Renderer $renderer,
+        private readonly Product  $productModel
     )
     {
     }
@@ -21,7 +21,7 @@ class ProductsController
 
         echo $this->renderer->render('shared/header.php');
         echo $this->renderer->render('Products/index.php', [
-            'Products' => $products
+            'products' => $products
         ]);
     }
 
