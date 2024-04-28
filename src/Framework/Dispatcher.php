@@ -2,13 +2,14 @@
 
 namespace Framework;
 
+use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 
 class Dispatcher
 {
     public function __construct(
-        private Router $router
+        private readonly Router $router
     )
     {
     }
@@ -26,11 +27,21 @@ class Dispatcher
         }
 
         $controller = $this->getControllerName($params) . 'Controller';
+        $controllerReflection = new ReflectionClass($controller);
+        $constructor = $controllerReflection->getConstructor();
+
+        $dependencies = [];
+        if (!is_null($constructor)) {
+            foreach ($constructor->getParameters() as $param) {
+                $type = (string)$param->getType();
+                $dependencies[] = new $type;
+            }
+        }
         $action = $this->getActionName($params);
 
         $args = $this->getActionArguments($controller, $action, $params);
 
-        $controller_obj = new $controller;
+        $controller_obj = new $controller(...$dependencies);
         $controller_obj->$action(...$args);
 
     }

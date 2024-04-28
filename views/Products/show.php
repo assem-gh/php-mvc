@@ -1,0 +1,1 @@
+Products: show page for product with id <?php echo $id; ?>
